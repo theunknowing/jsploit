@@ -1,0 +1,53 @@
+{
+  "name": "jsploit",
+  "version": "1.0.0",
+  "description": "Exploit Development Framework - Session management, HTML parsing, SSL bypass",
+  "type": "module",
+  "main": "lib/index.js",
+  "bin": {
+    "jsploit": "./bin/jsploit.js"
+  },
+  "exports": {
+    ".": "./lib/index.js",
+    "./http": "./lib/http/index.js",
+    "./html": "./lib/html/index.js",
+    "./cookies": "./lib/cookies/index.js",
+    "./utils": "./lib/utils/index.js"
+  },
+  "scripts": {
+    "start": "node bin/jsploit.js",
+    "new": "node bin/jsploit.js new",
+    "run": "node bin/jsploit.js run",
+    "list": "node bin/jsploit.js list"
+  },
+  "keywords": [
+    "exploit",
+    "security",
+    "pentest",
+    "http",
+    "session",
+    "cookies",
+    "html-parser",
+    "csrf"
+  ],
+  "author": "N00BCYB0T",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/N00BCYB0T/jsploit.git"
+  },
+  "bugs": {
+    "url": "https://github.com/N00BCYB0T/jsploit/issues"
+  },
+  "homepage": "https://github.com/N00BCYB0T/jsploit#readme",
+  "files": [
+    "bin/",
+    "lib/",
+    "exploits/template.js",
+    "LICENSE",
+    "README.md"
+  ]
+}
