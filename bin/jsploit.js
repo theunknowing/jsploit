@@ -60,7 +60,7 @@ function resolveTemplatePath(exploitsDir) {
 
 /**
  * Create a new exploit file from template in the exploits directory (see resolveExploitDir).
- * Replaces EXPLOIT_NAME and EXPLOIT_DATE in template. Suggests npm i jsploit if not installed locally.
+ * Replaces EXPLOIT_NAME and EXPLOIT_DATE in template. Suggests npm i @n00bcyb0t/jsploit if not installed locally.
  * @param {string} name - Exploit name (sanitized to safe filename)
  * @param {object} params - CLI parameters (e.g. params.dir)
  * @returns {Promise<number>} - EXIT_CODES.SUCCESS or VALIDATION_ERROR
@@ -105,8 +105,8 @@ async function createExploit(name, params) {
     logger.success(`Created exploit: ${colors.cyan}${fileName}${colors.reset}`);
     logger.info(`Edit: ${colors.gray}${filePath}${colors.reset}`);
     logger.info(`Run:  ${colors.gray}jsploit run ${safeName} -t http://target.com${colors.reset}`);
-    if (!fs.existsSync(path.join(process.cwd(), 'node_modules', 'jsploit', 'package.json'))) {
-        logger.info(`Tip: install jsploit locally: ${colors.cyan}npm i jsploit${colors.reset}`);
+    if (!fs.existsSync(path.join(process.cwd(), 'node_modules', '@n00bcyb0t', 'jsploit', 'package.json'))) {
+        logger.info(`Tip: install jsploit locally: ${colors.cyan}npm i @n00bcyb0t/jsploit${colors.reset}`);
     }
 
     return EXIT_CODES.SUCCESS;
@@ -126,7 +126,7 @@ function generateDefaultTemplate(name) {
  *   [Add exploit description here]
  */
 
-import { Session, parse, logger } from 'jsploit';
+import { Session, parse, logger } from '@n00bcyb0t/jsploit';
 
 /**
  * Exploit configuration
@@ -259,9 +259,16 @@ async function runExploit(name, params) {
             module = await import(moduleUrl);
         } catch (err) {
             const msg = String(err?.message || err);
-            if (err?.code === 'ERR_MODULE_NOT_FOUND' || msg.includes("Cannot find package 'jsploit'")) {
-                logger.error('Missing dependency: jsploit is not installed in this directory.');
-                logger.info(`Run: ${colors.cyan}npm i jsploit${colors.reset} (or run via a project with jsploit installed)`);
+            const missingPkg = /Cannot find package '(@n00bcyb0t\/jsploit|jsploit)'/.exec(msg);
+            if (err?.code === 'ERR_MODULE_NOT_FOUND' || missingPkg) {
+                if (missingPkg && missingPkg[1] === 'jsploit') {
+                    // Legacy exploit importing the unscoped name.
+                    logger.error("Exploit imports 'jsploit', but the package is '@n00bcyb0t/jsploit'.");
+                    logger.info(`Fix the import to: ${colors.cyan}import { Session } from '@n00bcyb0t/jsploit'${colors.reset}`);
+                } else {
+                    logger.error('Missing dependency: @n00bcyb0t/jsploit is not installed in this directory.');
+                }
+                logger.info(`Run: ${colors.cyan}npm i @n00bcyb0t/jsploit${colors.reset} (or run via a project with it installed)`);
                 return EXIT_CODES.VALIDATION_ERROR;
             }
             throw err;

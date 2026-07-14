@@ -22,13 +22,13 @@ This project is intended for **authorized security testing** and educational pur
 
 ```bash
 # Install globally
-npm i -g jsploit
+npm i -g @n00bcyb0t/jsploit
 
 # Verify installation
 jsploit -h
 
-# Recommended: install per-project (so generated exploits can `import 'jsploit'`)
-npm i jsploit
+# Recommended: install per-project (so generated exploits can `import '@n00bcyb0t/jsploit'`)
+npm i @n00bcyb0t/jsploit
 npx jsploit -h
 ```
 
@@ -58,7 +58,7 @@ jsploit run my-exploit -t http://target.com --dir ./pocs
 ### Programmatic Usage
 
 ```javascript
-import { Session, parse, logger } from 'jsploit';
+import { Session, parse, logger } from '@n00bcyb0t/jsploit';
 
 // Create session (like requests.Session)
 const session = new Session({
@@ -103,7 +103,7 @@ console.log(session.getCookies());
 ### Session
 
 ```javascript
-import { Session } from 'jsploit';
+import { Session } from '@n00bcyb0t/jsploit';
 
 const session = new Session({
     baseUrl: 'http://target.com',
@@ -178,7 +178,7 @@ res.text()          // Get body as text
 ### HTML Parser
 
 ```javascript
-import { parse } from 'jsploit';
+import { parse } from '@n00bcyb0t/jsploit';
 
 const html = parse(responseBody);
 
@@ -222,7 +222,7 @@ html.getMeta('csrf-token')
 ### Logger
 
 ```javascript
-import { logger } from 'jsploit';
+import { logger } from '@n00bcyb0t/jsploit';
 
 logger.info('Information');     // [*] Information
 logger.success('Success');      // [+] Success
@@ -250,7 +250,7 @@ import {
     TimeoutError,
     ParseError,
     ExploitError,
-} from 'jsploit';
+} from '@n00bcyb0t/jsploit';
 
 try {
     await session.get('/page');
@@ -273,7 +273,7 @@ try {
 
 ```javascript
 // exploits/my-exploit.js
-import { Session, parse, logger } from 'jsploit';
+import { Session, parse, logger } from '@n00bcyb0t/jsploit';
 
 export const metadata = {
     name: 'my-exploit',
