@@ -1,6 +1,6 @@
 {
   "name": "@n00bcyb0t/jsploit",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Exploit Development Framework - Session management, HTML parsing, SSL bypass",
   "type": "module",
   "main": "lib/index.js",
