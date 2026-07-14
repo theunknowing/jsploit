@@ -316,6 +316,42 @@ jsploit run my-exploit -t http://target.com --dir ./pocs
 node exploits/my-exploit.js http://target.com
 ```
 
+## Packaging for delivery
+
+When you need to **hand an exploit to someone who will just run it**, depending
+on `jsploit` (or any library) is fine — every ecosystem does it (Python's
+`requests`, `beautifulsoup4`, and so on). Rewriting a parser, a cookie jar, or
+deserialization logic by hand just to avoid a dependency doesn't scale and isn't
+worth it. **Keep the dependency.**
+
+If the runner has npm and network access, a plain `npm i @n00bcyb0t/jsploit`
+next to the script (see [Installation](#installation)) is all it takes.
+
+### Bundle into one file (offline / zero-setup)
+
+When the runner may be **offline** or you want a true one-file drop, bundle the
+exploit with [esbuild](https://esbuild.github.io/). `jsploit` — parser, cookies,
+everything — gets inlined into a single `.mjs` that needs no `npm install`:
+
+```bash
+npx esbuild path/to/exploit.js \
+  --bundle --platform=node --format=esm \
+  --outfile=exploit-standalone.mjs
+
+node exploit-standalone.mjs
+```
+
+You develop with the full framework and ship one self-contained file.
+
+### Checklist for a good delivery script
+
+- **Config block at the top** (`target`, and any `LHOST`/`LPORT`/paths), with
+  `process.argv` overrides — the runner edits a couple of lines or passes args.
+- **No manual interaction** — the full chain runs start to finish on its own.
+- **Prints evidence** (leaked file, command output, status) so success is visible.
+- **Meaningful exit codes** (`0` success, non-zero for each failure mode).
+- **SSL bypass** built in, so self-signed / lab certs don't block it.
+
 ## CLI Options
 
 ```
