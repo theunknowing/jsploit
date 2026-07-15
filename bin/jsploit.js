@@ -26,6 +26,7 @@ import {
     HttpError,
     ParseError,
     ExploitError,
+    ListenerError,
 } from '../lib/utils/errors.js';
 
 // Get directory paths
@@ -370,6 +371,11 @@ async function runExploit(name, params) {
                 logger.info(`Failed at step: ${err.step}`);
             }
             return EXIT_CODES.EXPLOIT_ERROR;
+        }
+
+        if (err instanceof ListenerError) {
+            logger.error(`Listener: ${err.message}`);
+            return EXIT_CODES.LISTENER_ERROR;
         }
 
         // Unknown error
